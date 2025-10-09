@@ -1,0 +1,17 @@
+torch
+transformers
+datasets
+tqdm
+numpy
+filelock
+MarkupSafe
+sympy
+networkx
+mpmath
+psutil
+typing_extensions
+matplotlib
+nltk
+bert-score
+optuna
+requests
