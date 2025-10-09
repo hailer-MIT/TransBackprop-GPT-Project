@@ -8,9 +8,9 @@ from torch.optim import AdamW
 from torch.utils.data import DataLoader
 from transformers import get_scheduler
 
-from TransBackprop_GPT_Project.config import GPTConfig
-from TransBackprop_GPT_Project.model import GPT
-from TransBackprop_GPT_Project.dataset import get_tokenizer, get_loaders
+from .config import GPTConfig
+from .model import GPT
+from .dataset import get_tokenizer, get_loaders
 
 # --- Training and Evaluation Functions ---
 

@@ -7,7 +7,7 @@ import os
 import requests # For downloading files
 from tqdm import tqdm # For download progress bar
 
-from TransBackprop_GPT_Project.utils import pad_collate_fn
+from .utils import pad_collate_fn
 
 # URLs for raw Penn Treebank (PTB) text files
 PTB_URLS = {
