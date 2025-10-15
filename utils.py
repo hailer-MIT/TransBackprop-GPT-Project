@@ -1,6 +1,7 @@
 import torch
 
 def pad_collate_fn(batch, pad_token_id):
+    # print(f"[pad_collate_fn] Using pad_token_id: {pad_token_id}")
     # Pad input_ids and labels to the maximum length in the batch
     max_len_input = max(len(item['input_ids']) for item in batch)
     max_len_label = max(len(item['labels']) for item in batch)

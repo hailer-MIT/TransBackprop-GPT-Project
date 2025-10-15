@@ -3,6 +3,7 @@ import torch.nn as nn
 from torch.nn import functional as F
 import time
 import os
+import argparse
 
 from torch.optim import AdamW
 from torch.utils.data import DataLoader
@@ -97,20 +98,26 @@ def main():
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     print(f"Using device: {device}")
 
+    # Add argparse for command-line arguments
+    parser = argparse.ArgumentParser(description="Train a GPT model.")
+    parser.add_argument('--no-resume', action='store_true', help='Start training from scratch, even if checkpoints exist.')
+    args = parser.parse_args()
+
     # 2. Configuration and Tokenizer
-    tokenizer = get_tokenizer()
-    config = GPTConfig(
-        vocab_size=len(tokenizer),
-        block_size=1024,
-        pad_token_id=tokenizer.pad_token_id,
-        num_epochs=3
-    )
+    config = GPTConfig()
+    tokenizer = get_tokenizer(config)
+    
+    print(f"Config vocab_size after tokenizer init: {config.vocab_size}")
+    print(f"Tokenizer vocab_size: {len(tokenizer)}")
+    
+    # The config object already contains the updated vocab_size and pad_token_id
+    # after get_tokenizer is called. No need to re-assign.
 
     # 3. Model Initialization
     model = GPT(config).to(device)
 
     # 4. Data Loaders
-    train_loader, val_loader = get_loaders(tokenizer, config.block_size, batch_size=4)
+    train_loader, val_loader = get_loaders(tokenizer, config.block_size, batch_size=config.batch_size, config=config)
     
     # 5. Optimizer and Scheduler
     optimizer = AdamW(model.parameters(), lr=1e-4)
@@ -124,9 +131,9 @@ def main():
     start_epoch = 0
     global_step = 0
     
-    # Try to load latest checkpoint
+    # Try to load latest checkpoint, unless --no-resume is specified
     checkpoint_path = "latest_checkpoint.pt"
-    if os.path.exists(checkpoint_path):
+    if os.path.exists(checkpoint_path) and not args.no_resume:
         print(f"Loading checkpoint from {checkpoint_path}")
         checkpoint = torch.load(checkpoint_path, map_location=device)
         model.load_state_dict(checkpoint['model_state_dict'])
@@ -169,7 +176,8 @@ def main():
     model.load_state_dict(torch.load("simple_gpt_best_model.pt"))
     model.eval()
 
-    prompt = "Hello, how are you"
+    prompt = input("Enter a prompt: ")
+    # prompt = "Hello, how are you"
     generated_text = generate_text(model, tokenizer, prompt, device=device)
     print(f"Prompt: {prompt}")
     print(f"Generated: {generated_text}")
