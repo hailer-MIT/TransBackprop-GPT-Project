@@ -1,4 +1,4 @@
-# TransBackprop GPT Project
+# TransBackprop GPT Project Using Pytorch
 
 ## 🏆 "From First Principles: Building a GPT Transformer from Scratch"
 
