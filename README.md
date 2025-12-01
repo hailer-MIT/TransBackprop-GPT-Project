@@ -42,7 +42,7 @@ This project demystifies how GPT works under the hood by re-building the archite
 
 #### 1. Clone & Enter Project
 ```sh
-git clone https://github.com/YOUR_USERNAME/TransBackprop_GPT_Project.git
+git clone https://github.com/hailer-MIT/TransBackprop_GPT_Project.git
 cd TransBackprop_GPT_Project
 ```
 
